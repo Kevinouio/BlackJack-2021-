@@ -1,3 +1,4 @@
+from pathlib import Path
 import random as rand
 import turtle as trtl
 
@@ -13,8 +14,10 @@ playing_cards_diamonds = ['ace_of_diamonds', '2_of_diamonds', '3_of_diamonds', '
 playing_cards_clubs = ['ace_of_clubs', '2_of_clubs', '3_of_clubs', '4_of_clubs', '5_of_clubs', '6_of_clubs', '7_of_clubs', '8_of_clubs', 
   '9_of_clubs', '10_of_clubs', 'jack_of_clubs', 'queen_of_clubs', 'king_of_clubs']
 turtles = []
-background = "/Users/kevin.ho/Desktop/Computer Science/Personal Projects/Card Games/PNG-cards-1.3/card_game_background.gif"
-clubs_2 = "/Users/kevin.ho/Desktop/Computer Science/Personal Projects/Card Games/PNG-cards-1.3/2_of_clubs.gif"
+BASE_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = BASE_DIR.parent / 'assets'
+background = str(ASSETS_DIR / 'ui' / 'Playing_card_Background.gif')
+clubs_2 = str(ASSETS_DIR / 'cards' / '2_of_clubs.gif')
 
 
 wn = trtl.Screen()

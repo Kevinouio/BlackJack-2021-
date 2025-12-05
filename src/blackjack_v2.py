@@ -1,9 +1,14 @@
+from pathlib import Path
 import turtle as trtl
 import random as rand
-import time
 
-spades_list = ['ace_of_spades', '2_of_spades', '3_of_spades', '4_of_spades', '5_of_spades', '6_of_spades', '7_of_spades', '8_of_spades', 
-'9_of_spades', '10_of_spades', 'jack_of_spades', 'queen_of_spades', 'king_of_spades']
+card_names = ['ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king']
+
+BASE_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = BASE_DIR.parent / 'assets'
+CARDS_DIR = ASSETS_DIR / 'cards'
+UI_DIR = ASSETS_DIR / 'ui'
+
 player_cards = []
 dealer_cards = []
 player_card_values = []
@@ -13,44 +18,31 @@ wn = trtl.Screen()
 wn.setup(width=1000, height=800)
 repeats = 0
 sum_values = 0
-rules_box = 'Personal Projects/Card Games/rules.gif'
-stand_box = 'Personal Projects/Card Games/stand.gif'
-background = 'Personal Projects/Card Games/Playing_card_Background.gif'
-back_of_card = 'Personal Projects/Card Games/Back_of_playing_card.gif'
-ace_spades = 'Personal Projects/Card Games/ace_of_clubs.gif'
-two_spades = 'Personal Projects/Card Games/2_of_clubs.gif'
-three_spades = 'Personal Projects/Card Games/3_of_clubs.gif'
-four_spades = 'Personal Projects/Card Games/4_of_clubs.gif'
-five_spades = 'Personal Projects/Card Games/5_of_clubs.gif'
-six_spades = 'Personal Projects/Card Games/6_of_clubs.gif'
-seven_spades = 'Personal Projects/Card Games/7_of_clubs.gif'
-eight_spades = 'Personal Projects/Card Games/8_of_clubs.gif'
-nine_spades = 'Personal Projects/Card Games/9_of_clubs.gif'
-ten_spades = 'Personal Projects/Card Games/10_of_clubs.gif'
-jack_spades = 'Personal Projects/Card Games/jack_of_clubs2.gif'
-queen_spades = 'Personal Projects/Card Games/queen_of_clubs2.gif'
-king_spades = 'Personal Projects/Card Games/king_of_clubs2.gif'
-hit_box = 'Personal Projects/Card Games/hit.gif'
+rules_box = str(UI_DIR / 'rules.gif')
+stand_box = str(UI_DIR / 'stand.gif')
+background = str(UI_DIR / 'Playing_card_Background.gif')
+back_of_card = str(CARDS_DIR / 'Back_of_playing_card.gif')
+card_image_lookup = {
+  'ace': str(CARDS_DIR / 'ace_of_clubs.gif'),
+  '2': str(CARDS_DIR / '2_of_clubs.gif'),
+  '3': str(CARDS_DIR / '3_of_clubs.gif'),
+  '4': str(CARDS_DIR / '4_of_clubs.gif'),
+  '5': str(CARDS_DIR / '5_of_clubs.gif'),
+  '6': str(CARDS_DIR / '6_of_clubs.gif'),
+  '7': str(CARDS_DIR / '7_of_clubs.gif'),
+  '8': str(CARDS_DIR / '8_of_clubs.gif'),
+  '9': str(CARDS_DIR / '9_of_clubs.gif'),
+  '10': str(CARDS_DIR / '10_of_clubs.gif'),
+  'jack': str(CARDS_DIR / 'jack_of_clubs2.gif'),
+  'queen': str(CARDS_DIR / 'queen_of_clubs2.gif'),
+  'king': str(CARDS_DIR / 'king_of_clubs2.gif'),
+}
+hit_box = str(UI_DIR / 'hit.gif')
 
 wn.bgpic(background)
-wn.addshape(rules_box)
-wn.addshape(stand_box)
-wn.addshape(hit_box)
-wn.addshape(back_of_card)
-wn.addshape(ace_spades)
-wn.addshape(two_spades)
-wn.addshape(three_spades)
-wn.addshape(four_spades)
-wn.addshape(five_spades)
-wn.addshape(six_spades)
-wn.addshape(seven_spades)
-wn.addshape(eight_spades)
-wn.addshape(nine_spades)
-wn.addshape(ten_spades)
-wn.addshape(jack_spades)
-wn.addshape(queen_spades)
-wn.addshape(king_spades)
-cards_images = [ace_spades, two_spades, three_spades, four_spades, five_spades, six_spades, seven_spades, eight_spades, nine_spades, jack_spades, queen_spades, king_spades]
+for shape in [rules_box, stand_box, hit_box, back_of_card] + [card_image_lookup[name] for name in card_names]:
+  wn.addshape(shape)
+cards_images = [card_image_lookup[name] for name in card_names]
 
 
 #expands the list so that it can be the same amount as a normal deck of cards
@@ -99,7 +91,7 @@ def dealer_cards_setup(x,y,curr_turn):
   card = trtl.Turtle()
   card.penup()
   card_img = cards_list.pop(0)
-  index = spades_list.index(card_img)
+  index = card_names.index(card_img)
   card.shape(back_of_card)
   insert_values(index,curr_turn)
   card.goto(x,y)
@@ -112,7 +104,7 @@ def pass_cards(card, x, y,curr_player):
     card = trtl.Turtle()
     card.penup()
     card_img = cards_list.pop(0)
-    index = spades_list.index(card_img)
+    index = card_names.index(card_img)
     shape =  cards_images.pop(index)
     card.shape(shape)
     cards_images.insert(index, shape)
@@ -133,7 +125,7 @@ def draw_card(card_set,curr_turn):
   card = trtl.Turtle()
   card.penup()
   card_img = cards_list.pop(0)
-  index = spades_list.index(card_img)
+  index = card_names.index(card_img)
   shape = cards_images.pop(index)
   card.shape(shape)
   cards_images.insert(index, shape)
@@ -220,16 +212,7 @@ def finish_drawing():
   hit.hideturtle()
   stand.hideturtle()
   text.clear()
-
-
-
-
-
-
-
-
-
-cards_list = setup_deck(spades_list, repeats) 
+cards_list = setup_deck(card_names, repeats) 
 set_up_board()
 
 wn.tracer(False)
